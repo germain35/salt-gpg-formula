@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja:ts=2:sw=2
+
+{## Start with  defaults from defaults.sls ##}
+{% import_yaml "gpg/defaults.yaml" as default_settings %}
+
+{## Merge in gpg pillar ##}
+{% set gpg = salt['pillar.get'](
+  'gpg',
+  default=default_settings.gpg,
+  merge=True)
+%}
+
+{## 
+Setup variable using grains['os_family'] based logic, only add key:values here
+that differ from whats in defaults.yaml
+##}
+{% set os_family_map = salt['grains.filter_by']({
+    'Debian': {
+        'packages': ['gnupg', 'rng-tools'],
+    },
+}, grain='os_family', merge=salt['pillar.get']('gpg:lookup'), default='Debian') %}
+
+{## Merge the flavor_map to the default settings ##}
+{% do gpg.update(os_family_map) %}
+
