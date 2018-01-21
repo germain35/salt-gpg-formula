@@ -8,7 +8,7 @@ include:
   {%- set user_home_dir = salt['user.info'](user).home %}
 
 gpg_conf_dir_{{user}}:
-  file.managed:
+  file.directory:
     - name: {{ user_home_dir|path_join(gpg.home_dir) }}
     - user: {{ user }}
     - mode: 700

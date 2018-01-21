@@ -45,5 +45,5 @@ gpg_create_{{email}}:
       - expire_date: {{params.expire_date}}
       {%- endif %}
       {%- if params.passphrase is defined %}
-      - use_passphrase: True 
+      - use_passphrase: {{params.passphrase}} 
       {%- endif %}

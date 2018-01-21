@@ -12,7 +12,6 @@ gpg:
           subkey_type: RSA
           subkey_length: 4096
           expire_date: 0
-          trust_level: ultimately
           passphrase: stupidpassphrase
       present:
         AEF67H88:
@@ -21,4 +20,3 @@ gpg:
       absent:
         AEF67H87:
           delete_secret: True
-
