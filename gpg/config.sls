@@ -22,7 +22,7 @@ gpg_conf_file_{{user}}:
     - name: {{ user_home_dir|path_join(gpg.conf_file) }}
     - user: {{ user }}
     - mode: 600
-    - contents: {{ config }}
+    - contents: {{ params.config }}
     - require:
       - file: gpg_conf_dir_{{user}}
 
