@@ -1,4 +1,4 @@
-{% from "gpg/map.jinja" import gpg with context %}
+{%- from "gpg/map.jinja" import gpg with context %}
 
 {%- set os         = salt['grains.get']('os') %}
 {%- set os_family  = salt['grains.get']('os_family') %}
@@ -6,7 +6,7 @@
 {%- set oscodename = salt['grains.get']('oscodename') %}
 
 {%- set email  = salt['pillar.get']('gpg_email') %}
-{%- set params = gpg.get('keys').get(email, {}) %}
+{%- set params = gpg.get('create').get(email, {}) %}
 
 include:
   - gpg.install

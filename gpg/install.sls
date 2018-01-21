@@ -5,6 +5,12 @@
 {%- set osrelease  = salt['grains.get']('osrelease') %}
 {%- set oscodename = salt['grains.get']('oscodename') %}
 
+{%- if gpg.install_tools %}
+gpg_tools_packages:
+  pkg.installed:
+    - pkgs: {{ gpg.tools_pkgs }}
+{%- endif %}
+
 gpg_packages:
   pkg.installed:
-    - pkgs: {{gpg.packages}}
+    - pkgs: {{gpg.pkg}}

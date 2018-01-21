@@ -2,3 +2,5 @@
 
 include:
   - gpg.install
+  - gpg.delete
+  - gpg.import
