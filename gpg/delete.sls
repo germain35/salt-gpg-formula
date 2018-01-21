@@ -19,7 +19,7 @@ gpg_delete_key_{{user}}_{{id}}:
       {%- elif key_params.fingerprint is defined %}
       - fingerprint: {{ key_params.fingerprint }}
       {%- endif %}
-      {%- if key_params.delete_secret id defined %}
+      {%- if key_params.delete_secret is defined %}
       - delete_secret: {{ key_params.delete_secret }}
       {%- endif %}
     {%- endfor %}
