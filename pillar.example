@@ -13,11 +13,11 @@ gpg:
       expire_date: 0
       trust_level: ultimately
       passphrase: stupidpassphrase
-  import:
+  present:
     user: root
     filename: /srv/key
     trust_level: ultimately
-  delete:
+  absent:
     user: root
     keyid: AEF67H87
     delete_secret: True

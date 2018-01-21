@@ -59,7 +59,7 @@ gpg_import_key_{{id}}:
         - module: gpg_trust_key_{{id}}
   {%- endif %}
 
-  {%- if params.trust_level is defined and (params.keyid is defined or params.fingerprint is defined) %}
+  {%- if params.trust_level is defined %}
 gpg_trust_key_{{id}}:
   module.run:
     - gpg.trust_key:
