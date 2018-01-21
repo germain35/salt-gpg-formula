@@ -1,5 +1,11 @@
 {%- from "gpg/map.jinja" import gpg with context %}
 
+include:
+  - gpg.install
+  {%- if gpg.config is defined %}
+  - gpg.config
+  {%- endif %}
+
 {%- for id, params in gpg.get('absent', {}).iteritems() %}
 
 gpg_delete_key_{{id}}:

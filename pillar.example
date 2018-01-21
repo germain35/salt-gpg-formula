@@ -1,9 +1,11 @@
 #!jinja|yaml|gpg
 gpg:
-  keys:
+  config:
+    root:
+      - 'pinentry-mode loopback'
+  create:
     gpg@domain.com:
       user: root
-      key_id: False
       key_type: RSA
       key_length: 4096
       subkey_type: RSA
@@ -11,3 +13,12 @@ gpg:
       expire_date: 0
       trust_level: ultimately
       passphrase: stupidpassphrase
+  import:
+    user: root
+    filename: /srv/key
+    trust_level: ultimately
+  delete:
+    user: root
+    keyid: AEF67H87
+    delete_secret: True
+

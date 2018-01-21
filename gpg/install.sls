@@ -1,4 +1,4 @@
-{% from "gpg/map.jinja" import gpg with context %}
+{%- from "gpg/map.jinja" import gpg with context %}
 
 {%- set os         = salt['grains.get']('os') %}
 {%- set os_family  = salt['grains.get']('os_family') %}

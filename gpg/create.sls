@@ -10,6 +10,9 @@
 
 include:
   - gpg.install
+  {%- if gpg.config is defined %}
+  - gpg.config
+  {%- endif %}
 
 gpg_create_{{email}}:
   module.run:
