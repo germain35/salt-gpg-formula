@@ -1,24 +1,24 @@
 #!jinja|yaml|gpg
 gpg:
-  config:
+  users:
     root:
-      - 'pinentry-mode loopback'
-  create:
-    gpg@domain.com:
-      user: root
-      key_type: RSA
-      key_length: 4096
-      subkey_type: RSA
-      subkey_length: 4096
-      expire_date: 0
-      trust_level: ultimately
-      passphrase: stupidpassphrase
-  present:
-    user: root
-    filename: /srv/key
-    trust_level: ultimately
-  absent:
-    user: root
-    keyid: AEF67H87
-    delete_secret: True
+      purge_gnupghome: True
+      config:
+        - 'pinentry-mode loopback'
+      create:
+        gpg@domain.com:
+          key_type: RSA
+          key_length: 4096
+          subkey_type: RSA
+          subkey_length: 4096
+          expire_date: 0
+          trust_level: ultimately
+          passphrase: stupidpassphrase
+      present:
+        AEF67H88:
+          filename: /srv/key
+          trust: ultimately
+      absent:
+        AEF67H87:
+          delete_secret: True
 

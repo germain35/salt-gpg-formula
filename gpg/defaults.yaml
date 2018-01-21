@@ -2,4 +2,4 @@
 # vim: ft=yaml
 gpg:
   install_tools: False
-  user: root
+  purge_gnupghome: False

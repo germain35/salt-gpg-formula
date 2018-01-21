@@ -5,14 +5,13 @@
 {%- set osrelease  = salt['grains.get']('osrelease') %}
 {%- set oscodename = salt['grains.get']('oscodename') %}
 
+{%- set user   = salt['pillar.get']('gpg_user') %}
 {%- set email  = salt['pillar.get']('gpg_email') %}
-{%- set params = gpg.get('create').get(email, {}) %}
+{%- set params = gpg.users.get(user).create.get(email, {}) %}
 
 include:
   - gpg.install
-  {%- if gpg.config is defined %}
   - gpg.config
-  {%- endif %}
 
 gpg_create_{{email}}:
   module.run:
@@ -25,7 +24,7 @@ gpg_create_{{email}}:
       - name_comment: {{params.comment}}
       {%- endif %}
       {%- if params.user is defined %}
-      - user: {{params.user}}
+      - user: {{user}}
       {%- endif %}
       {%- if params.gnupghome is defined %}
       - gnupghome: {{params.gnupghome}}

@@ -2,26 +2,26 @@
 
 include:
   - gpg.install
-  {%- if gpg.config is defined %}
   - gpg.config
-  {%- endif %}
 
-{%- for id, params in gpg.get('absent', {}).iteritems() %}
-
-gpg_delete_key_{{id}}:
+{%- for user, params in gpg.get('users', {}).iteritems() %}
+  {%- if params.absent is defined and params.absent is mapping %}
+    {%- for id, key_params in params.absent.iteritems() %}
+gpg_delete_key_{{user}}_{{id}}:
   module.run:
     - gpg.delete_key:
-      - user: {{ params.user|default(gpg.user) }}
-      {%- if params.gnuphome is defined %}
-      - gnupghome: {{ params.gnupghome }}
+      - user: {{ user }}
+      {%- if key_params.gnuphome is defined %}
+      - gnupghome: {{ key_params.gnupghome }}
       {%- endif %}
-      {%- if params.keyid is defined %}
-      - keyid: {{ params.keyid }}
-      {%- elif params.fingerprint is defined %}
-      - fingerprint: {{ params.fingerprint }}
+      {%- if key_params.keyid is defined %}
+      - keyid: {{ key_params.keyid }}
+      {%- elif key_params.fingerprint is defined %}
+      - fingerprint: {{ key_params.fingerprint }}
       {%- endif %}
-      {%- if params.delete_secret id defined %}
-      - delete_secret: {{ params.delete_secret }}
+      {%- if key_params.delete_secret id defined %}
+      - delete_secret: {{ key_params.delete_secret }}
       {%- endif %}
-
+    {%- endfor %}
+  {%- endif %}
 {%- endfor %}
