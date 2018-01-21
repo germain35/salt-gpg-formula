@@ -55,8 +55,8 @@ gpg_import_key_{{id}}:
       {%- elif params.source is defined %}
       - filename: {{ key_file }}
       {%- endif %}
-      - require_in:
-        - module: gpg_trust_key_{{id}}
+    - require_in:
+      - module: gpg_trust_key_{{id}}
   {%- endif %}
 
   {%- if params.trust_level is defined %}
@@ -64,9 +64,8 @@ gpg_trust_key_{{id}}:
   module.run:
     - gpg.trust_key:
       - user: {{ params.user|default(gpg.user) }}
-      {%- if params.keyid is defined %}
       - keyid: {{ id }}
-      {%- elif params.fingerprint is defined %}
+      {%- if params.fingerprint is defined %}
       - fingerprint: {{ params.fingerprint }}
       {%- endif %}
       - trust_level: {{ params.trust_level }}
