@@ -5,8 +5,8 @@ include:
   - gpg.config
 
 {%- for user, params in gpg.get('users', {}).iteritems() %}
-  {%- if params.present is defined and params.present is mapping %}
-    {%- for id, key_params in params.present.iteritems() %}
+  {%- if params.import is defined and params.import is mapping %}
+    {%- for id, key_params in params.import.iteritems() %}
 
   {%- if params.source is defined %}
 

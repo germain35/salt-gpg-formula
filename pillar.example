@@ -13,10 +13,10 @@ gpg:
           subkey_length: 4096
           expire_date: 0
           passphrase: stupidpassphrase
-      present:
+      import:
         AEF67H88:
           filename: /srv/key
           trust: ultimately
-      absent:
+      delete:
         AEF67H87:
           delete_secret: True
