@@ -30,6 +30,17 @@ gpg_clean_key_file_{{id}}:
 
   {%- endif %}
 
+  {%- if params.passphrase is defined %}
+
+gpg_import_key_{{id}}:
+  cmd.run:
+    - name: gpg --batch --yes --passphrase {{ params.passphrase }} --import {{ key_file }}
+    - unless: gpg -K {{ id }}
+    - require_in:
+      - module: gpg_trust_key_{{id}}
+
+  {%- else %}
+
 gpg_import_key_{{id}}:
   module.run:
     - gpg.import_key:
@@ -44,6 +55,9 @@ gpg_import_key_{{id}}:
       {%- elif params.source is defined %}
       - filename: {{ key_file }}
       {%- endif %}
+      - require_in:
+        - module: gpg_trust_key_{{id}}
+  {%- endif %}
 
   {%- if params.trust_level is defined and (params.keyid is defined or params.fingerprint is defined) %}
 gpg_trust_key_{{id}}:
