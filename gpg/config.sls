@@ -7,9 +7,15 @@ include:
 
   {%- set user_home_dir = salt['user.info'](user).home %}
 
+  {%- if params.gnupghome is defined %}
+    {%- set gnupghome = params.gnupghome %}
+  {%- else %}
+    {%- set gnupghome = user_home_dir|path_join(gpg.home_dir) %}
+  {%- endif %}
+
 gpg_conf_dir_{{user}}:
   file.directory:
-    - name: {{ user_home_dir|path_join(gpg.home_dir) }}
+    - name: {{ gnupghome }}
     - user: {{ user }}
     - mode: 700
     - clean: {{ params.purge_gnupghome|default(gpg.purge_gnupghome) }}
@@ -19,7 +25,7 @@ gpg_conf_dir_{{user}}:
 
 gpg_conf_file_{{user}}:
   file.managed:
-    - name: {{ user_home_dir|path_join(gpg.conf_file) }}
+    - name: {{ gnupghome|path_join(gpg.conf_file) }}
     - user: {{ user }}
     - mode: 600
     - contents: {{ params.config }}
