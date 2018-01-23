@@ -36,7 +36,7 @@ gpg_clean_key_file_{{user}}_{{id}}:
 gpg_key_file_{{user}}_{{id}}:
   file.managed:
     - name: {{ key_file }}
-    - contents: {{ key_params.text }}
+    - contents_pillar: gpg:users:{{user}}:import:{{id}}:text
     - user: {{ user }}
     - mode: 600
     - require_in:
