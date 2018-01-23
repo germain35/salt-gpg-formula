@@ -39,7 +39,8 @@ gpg_import_key_{{user}}_{{id}}:
       - gnupghome: {{ key_params.gnupghome }}
       {%- endif %}
       {%- if key_params.text is defined %}
-      - text: {{ key_params.text }}
+      - text: |
+        {{ key_params.text }}
       {%- elif key_params.filename is defined %}
       - filename: {{ key_params.filename }}
       {%- elif key_params.source is defined %}
