@@ -7,11 +7,11 @@ include:
 {%- for user, params in gpg.get('users', {}).iteritems() %}
   {%- if params.import is defined and params.import is mapping %}
 
-    {%- set user_home_dir = salt['user.info'](params.user|default(gpg.user)).home %}
-    {%- set key_file      = user_home_dir|path_join(id ~ '.gpg') %}
+    {%- set user_home_dir = salt['user.info'](user).home %}
 
     {%- for id, key_params in params.import.iteritems() %}
 
+      {%- set key_file = user_home_dir|path_join(id ~ '.gpg') %}
 
       {%- if params.source is defined %}
 
