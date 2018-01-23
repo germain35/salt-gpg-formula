@@ -13,4 +13,4 @@ gpg_tools_packages:
 
 gpg_packages:
   pkg.installed:
-    - name: {{gpg.pkg}}
+    - pkgs: {{gpg.pkgs}}
