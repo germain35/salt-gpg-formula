@@ -77,7 +77,7 @@ gpg_trust_key_{{user}}_{{id}}:
       - trust_level: {{ key_params.trust }}
   {%- endif %}
 
-gpg_perms:
+gpg_home_dir_{{user}}_{{id}}:
   file.directory:
     {%- if key_params.gnuphome is defined %}
     - name: {{ key_params.gnupghome }}
