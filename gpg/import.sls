@@ -13,12 +13,13 @@ include:
 
       {%- set key_file = user_home_dir|path_join(id ~ '.gpg') %}
 
-      {%- if params.source is defined %}
+      {%- if key_params.source is defined %}
 
 gpg_key_file_{{user}}_{{id}}:
   file.managed:
     - name: {{ key_file }}
     - source: {{ key_params.source }}
+    - skip_verify: True
     - user: {{ user }}
     - mode: 600
     - makedirs: True
