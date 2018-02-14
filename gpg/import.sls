@@ -71,9 +71,10 @@ gpg_trust_key_{{user}}_{{id}}:
   module.run:
     - gpg.trust_key:
       - user: {{ user }}
-      - keyid: {{ id }}
       {%- if key_params.fingerprint is defined %}
       - fingerprint: {{ key_params.fingerprint }}
+      {%- else %}
+      - keyid: {{ id }}
       {%- endif %}
       - trust_level: {{ key_params.trust }}
   {%- endif %}
