@@ -55,7 +55,7 @@ gpg_import_key_{{user}}_{{id}}:
   module.run:
     - gpg.import_key:
       - user: {{ user }}
-      {%- if key_params.gnuphome is defined %}
+      {%- if key_params.gnupghome is defined %}
       - gnupghome: {{ key_params.gnupghome }}
       {%- endif %}
       {%- if key_params.source is defined or key_params.text is defined %}
@@ -81,7 +81,7 @@ gpg_trust_key_{{user}}_{{id}}:
 
 gpg_home_dir_{{user}}_{{id}}:
   file.directory:
-    {%- if key_params.gnuphome is defined %}
+    {%- if key_params.gnupghome is defined %}
     - name: {{ key_params.gnupghome }}
     {%- else %}
     - name: {{ user_home_dir|path_join(gpg.home_dir) }}
