@@ -24,13 +24,13 @@ gpg_key_file_{{user}}_{{id}}:
     - mode: 600
     - makedirs: True
     - require_in:
-      - module: gpg_import_key_{{user}}_{{id}}
+      - cmd: gpg_import_key_{{user}}_{{id}}
 
 gpg_clean_key_file_{{user}}_{{id}}:
   file.absent:
     - name: {{ key_file }}
     - require:
-      - module: gpg_import_key_{{user}}_{{id}}
+      - cmd: gpg_import_key_{{user}}_{{id}}
 
       {%- elif key_params.text is defined %}
 
@@ -41,28 +41,20 @@ gpg_key_file_{{user}}_{{id}}:
     - user: {{ user }}
     - mode: 600
     - require_in:
-      - module: gpg_import_key_{{user}}_{{id}}
+      - cmd: gpg_import_key_{{user}}_{{id}}
 
 gpg_clean_key_file_{{user}}_{{id}}:
   file.absent:
     - name: {{ key_file }}
     - require:
-      - module: gpg_import_key_{{user}}_{{id}}
+      - cmd: gpg_import_key_{{user}}_{{id}}
 
       {%- endif %}
 
 gpg_import_key_{{user}}_{{id}}:
-  module.run:
-    - gpg.import_key:
-      - user: {{ user }}
-      {%- if params.gnupghome is defined %}
-      - gnupghome: {{ params.gnupghome }}
-      {%- endif %}
-      {%- if key_params.source is defined or key_params.text is defined %}
-      - filename: {{ key_file }}
-      {%- elif key_params.filename is defined %}
-      - filename: {{ key_params.filename }}
-      {%- endif %}
+  cmd.run:
+    - name: gpg {% if params.gnupghome is defined %}--homedir {{params.gnupghome}}{% endif %} --batch --import {{key_params.get('filename', key_file)}}
+    - runas: {{ user }}
     - require_in:
       - module: gpg_trust_key_{{user}}_{{id}}
 
