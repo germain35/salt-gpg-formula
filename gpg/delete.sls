@@ -4,9 +4,9 @@ include:
   - gpg.install
   - gpg.config
 
-{%- for user, params in gpg.get('users', {}).iteritems() %}
+{%- for user, params in gpg.get('users', {}).items() %}
   {%- if params.delete is defined and params.delete is mapping %}
-    {%- for id, key_params in params.delete.iteritems() %}
+    {%- for id, key_params in params.delete.items() %}
 gpg_delete_key_{{user}}_{{id}}:
   module.run:
     - gpg.delete_key:

@@ -4,12 +4,12 @@ include:
   - gpg.install
   - gpg.config
 
-{%- for user, params in gpg.get('users', {}).iteritems() %}
+{%- for user, params in gpg.get('users', {}).items() %}
   {%- if params.import is defined and params.import is mapping %}
 
     {%- set user_home_dir = salt['user.info'](user).home %}
 
-    {%- for id, key_params in params.import.iteritems() %}
+    {%- for id, key_params in params.import.items() %}
 
       {%- set key_file = user_home_dir|path_join(id ~ '.gpg') %}
 

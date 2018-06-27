@@ -3,7 +3,7 @@
 include:
   - gpg.install
 
-{%- for user, params in gpg.get('users', {}).iteritems() %}
+{%- for user, params in gpg.get('users', {}).items() %}
 
   {%- set user_home_dir = salt['user.info'](user).home %}
 
