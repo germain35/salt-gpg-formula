@@ -15,7 +15,10 @@ that differ from what is in defaults.yaml
 {% set os_family_map = salt['grains.filter_by']({
     'Debian': {
         'tools_pkgs': ['rng-tools'],
-        'pkgs': ['gnupg', 'python-gnupg'],
+        'pkgs': salt['grains.filter_by']({
+            '2': ['gnupg', 'python-gnupg'],
+            '3': ['gnupg', 'python3-gnupg'],
+        }, grain="pythonversion", default='2'),
         'home_dir': '.gnupg',
         'conf_file': 'gpg.conf'
     },

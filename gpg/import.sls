@@ -11,7 +11,8 @@ include:
 
     {%- for id, key_params in params.import.items() %}
 
-      {%- set key_file = user_home_dir|path_join(id ~ '.gpg') %}
+      {%- set key_file     = user_home_dir|path_join(id ~ '.gpg') %}
+      {%- set gpg_home_dir = key_params.get('gnupghome', params.get('gnupghome', user_home_dir|path_join(gpg.home_dir))) %}
 
       {%- if key_params.source is defined %}
 
@@ -51,10 +52,22 @@ gpg_clean_key_file_{{user}}_{{id}}:
 
       {%- endif %}
 
+gpg_home_dir_{{user}}_{{id}}:
+  file.directory:
+    - name: {{gpg_home_dir}}
+    - user: {{ user }}
+    - dir_mode: 700
+    - file_mode: 600
+    - recurse:
+      - user
+      - mode
+
 gpg_import_key_{{user}}_{{id}}:
   cmd.run:
-    - name: gpg {% if params.gnupghome is defined %}--homedir {{params.gnupghome}}{% endif %} --batch --import {{key_params.get('filename', key_file)}}
+    - name: gpg --homedir {{gpg_home_dir}} --batch --import {{key_params.get('filename', key_file)}}
     - runas: {{ user }}
+    - require:
+      - file: gpg_home_dir_{{user}}_{{id}}
     - require_in:
       - module: gpg_trust_key_{{user}}_{{id}}
 
@@ -70,20 +83,6 @@ gpg_trust_key_{{user}}_{{id}}:
       {%- endif %}
       - trust_level: {{ key_params.trust }}
   {%- endif %}
-
-gpg_home_dir_{{user}}_{{id}}:
-  file.directory:
-    {%- if params.gnupghome is defined %}
-    - name: {{ params.gnupghome }}
-    {%- else %}
-    - name: {{ user_home_dir|path_join(gpg.home_dir) }}
-    {%- endif %}
-    - user: {{ user }}
-    - dir_mode: 700
-    - file_mode: 600
-    - recurse:
-      - user
-      - mode
 
     {%- endfor %}
   {%- endif %}
