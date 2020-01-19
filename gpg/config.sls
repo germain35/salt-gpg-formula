@@ -5,7 +5,7 @@ include:
 
 {%- for user, params in gpg.get('users', {}).items() %}
 
-  {%- set user_home_dir = salt['user.info'](user).home %}
+  {%- set user_home_dir = (salt['user.info'](user)).get('home', '/') %}
 
   {%- if params.gnupghome is defined %}
     {%- set gnupghome = params.gnupghome %}

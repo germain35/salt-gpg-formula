@@ -7,9 +7,9 @@ include:
 {%- for user, params in gpg.get('users', {}).items() %}
   {%- if params.import is defined and params.import is mapping %}
 
-    {%- set user_home_dir = salt['user.info'](user).home %}
+    {%- set user_home_dir = (salt['user.info'](user)).get('home', '/') %}
 
-    {%- for id, key_params in params.import.items() %}
+    {%- for id, key_params in params.get('import', {}).items() %}
 
       {%- set key_file     = user_home_dir|path_join(id ~ '.gpg') %}
       {%- set gpg_home_dir = key_params.get('gnupghome', params.get('gnupghome', user_home_dir|path_join(gpg.home_dir))) %}
@@ -56,6 +56,7 @@ gpg_home_dir_{{user}}_{{id}}:
   file.directory:
     - name: {{gpg_home_dir}}
     - user: {{ user }}
+    - makedirs: True
     - dir_mode: 700
     - file_mode: 600
     - recurse:
